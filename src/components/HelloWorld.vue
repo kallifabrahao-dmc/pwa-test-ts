@@ -103,9 +103,9 @@ const sendRequest = async (
     exibirNotificacao("Sucesso", {
       body: "Dados sincronizados com sucesso!",
     });
-  } catch (error) {
+  } catch (error: any) {
     console.error("Error:", error);
-    errorMessage.value = "Falha ao enviar os dados!";
+    errorMessage.value = `Falha ao enviar os dados, ${error.message}`;
     exibirNotificacao("Erro", {
       body: "Falha ao enviar os dados!",
     });
