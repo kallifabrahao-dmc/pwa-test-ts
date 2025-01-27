@@ -22,10 +22,6 @@
 <script lang="ts" setup>
 import { onMounted, ref } from "vue";
 
-interface IOptions {
-  body: string;
-}
-
 const isSending = ref(false);
 const errorMessage = ref("");
 const isSynced = ref(false);
@@ -61,9 +57,7 @@ const sendRequest = async (
 ) => {
   if (!navigator.onLine) {
     offline.value = true;
-    exibirNotificacao("Conexão Offline", {
-      body: "A requisição será sincronizada assim que a conexão for restabelecida.",
-    });
+
     return;
   }
 
@@ -91,24 +85,16 @@ const sendRequest = async (
 
     if (response.status === 204) {
       isSynced.value = true;
-      exibirNotificacao("Sucesso", {
-        body: "Dados sincronizados com sucesso!",
-      });
+
       return;
     }
 
     const responseData = await response.json();
     console.log(responseData);
     isSynced.value = true;
-    exibirNotificacao("Sucesso", {
-      body: "Dados sincronizados com sucesso!",
-    });
   } catch (error: any) {
     console.error("Error:", error);
     errorMessage.value = `Falha ao enviar os dados, ${error.message}`;
-    exibirNotificacao("Erro", {
-      body: "Falha ao enviar os dados!",
-    });
   } finally {
     isSending.value = false;
   }
@@ -149,12 +135,6 @@ const solicitarPermissao = async () => {
   const permission = await Notification.requestPermission();
   if (permission !== "granted") {
     console.error("Permissão para notificações negada.");
-  }
-};
-
-const exibirNotificacao = (titulo: string, opcoes: IOptions) => {
-  if (Notification.permission === "granted") {
-    new Notification(titulo, opcoes);
   }
 };
 
