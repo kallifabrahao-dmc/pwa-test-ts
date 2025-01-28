@@ -17,9 +17,9 @@
 </template>
 <script lang="ts" setup>
 import { onMounted, ref } from "vue";
-interface IOptions {
-  body: string;
-}
+// interface IOptions {
+//   body: string;
+// }
 const isSending = ref(false);
 const errorMessage = ref("");
 const isSynced = ref(false);
