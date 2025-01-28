@@ -6,6 +6,26 @@ export default defineConfig({
   plugins: [
     vue(),
     VitePWA({
+      injectRegister: "auto",
+      includeAssets: ["favicon.ico", "apple-touch-icon.png", "mask-icon.svg"],
+      manifest: {
+        name: "Teste pwa",
+        short_name: "Pwa",
+        description: "testando pwa",
+        theme_color: "#45D32D",
+        icons: [
+          {
+            src: "src/assets/img1.png",
+            sizes: "192x192",
+            type: "image/png",
+          },
+          {
+            src: "src/assets/img2.png",
+            sizes: "512x512",
+            type: "image/png",
+          },
+        ],
+      },
       workbox: {
         runtimeCaching: [
           {
