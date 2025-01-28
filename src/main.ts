@@ -3,7 +3,7 @@ import App from "./App.vue";
 
 if ("serviceWorker" in navigator) {
   navigator.serviceWorker
-    .register("/service-worker.js")
+    .register("/service-worker.ts")
     .then((registration) => {
       console.log("Service Worker registrado com sucesso:", registration);
     })
@@ -11,5 +11,7 @@ if ("serviceWorker" in navigator) {
       console.error("Falha ao registrar o Service Worker:", error);
     });
 }
+
+// Exemplo de uso
 
 createApp(App).mount("#app");
