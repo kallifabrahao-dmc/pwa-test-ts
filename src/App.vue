@@ -1,9 +1,12 @@
 <script setup lang="ts">
 import HelloWorld from "./components/HelloWorld.vue";
 import PWABadge from "./components/PWABadge.vue";
+import SplashScreen from "./components/SplashScreen.vue";
 </script>
 
 <template>
+  <SplashScreen />
+
   <div class="container">
     <a href="https://vitejs.dev" target="_blank">
       <img src="/favicon.svg" class="logo" alt="pwa-teste-ts logo" />
