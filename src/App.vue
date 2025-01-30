@@ -38,5 +38,6 @@ import SplashScreen from "./components/SplashScreen.vue";
   flex-direction: column;
   align-items: center;
   justify-content: center;
+  height: 100vh;
 }
 </style>
