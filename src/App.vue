@@ -8,12 +8,12 @@ import SplashScreen from "./components/SplashScreen.vue";
   <SplashScreen />
 
   <div class="container">
-    <a href="https://vitejs.dev" target="_blank">
-      <img src="/favicon.svg" class="logo" alt="pwa-teste-ts logo" />
-    </a>
-    <a href="https://vuejs.org/" target="_blank">
-      <img src="./assets/vue.svg" class="logo vue" alt="Vue logo" />
-    </a>
+    <h1>Testando aplicação pwa para o projeto DMC 3.0</h1>
+    <span>✅ Notificações</span>
+    <span>✅ Background Sync</span>
+    <span>✅ Local storage</span>
+    <span>✅ SplashScreen</span>
+
     <HelloWorld msg="pwa-teste-ts" />
   </div>
   <PWABadge />
@@ -38,6 +38,5 @@ import SplashScreen from "./components/SplashScreen.vue";
   flex-direction: column;
   align-items: center;
   justify-content: center;
-  height: 100vh;
 }
 </style>

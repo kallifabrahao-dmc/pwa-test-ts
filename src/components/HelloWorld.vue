@@ -1,10 +1,12 @@
 <template>
-  <div>
-    <button @click="sendPostRequest">Enviar POST</button>
-    <button @click="sendPutRequest">Enviar PUT</button>
-    <button @click="sendDeleteRequest">Enviar DELETE</button>
-    <button @click="saveToLocalStorage">Salvar no Local Storage</button>
-    <button @click="loadFromLocalStorage">Carregar do Local Storage</button>
+  <div class="container-hello">
+    <div class="container-btn">
+      <button @click="sendPostRequest">Enviar POST</button>
+      <button @click="sendPutRequest">Enviar PUT</button>
+      <button @click="sendDeleteRequest">Enviar DELETE</button>
+      <button @click="saveToLocalStorage">Salvar no Local Storage</button>
+      <button @click="loadFromLocalStorage">Carregar do Local Storage</button>
+    </div>
     <p v-if="isSending">Enviando...</p>
     <p v-if="errorMessage" class="error">Erro: {{ errorMessage }}</p>
     <p v-if="isSynced">Dados sincronizados com sucesso!</p>
@@ -18,10 +20,6 @@
 <script lang="ts" setup>
 import { onMounted, ref } from "vue";
 
-// interface IOptions {
-//   body: string;
-// }
-
 const isSending = ref(false);
 const errorMessage = ref("");
 const isSynced = ref(false);
@@ -29,13 +27,13 @@ const offline = ref(false);
 const apiUrl = "https://reqres.in/api/users";
 const storedData = ref<string | null>(null);
 const localStorageKey = "meuDado";
-// Função para salvar um dado no localStorage
+
 const saveToLocalStorage = () => {
   const dataToSave = "Este é um dado de exemplo";
   localStorage.setItem(localStorageKey, dataToSave);
   alert("Dado salvo no Local Storage.");
 };
-// Função para carregar o dado do localStorage
+
 const loadFromLocalStorage = () => {
   const data = localStorage.getItem(localStorageKey);
   if (data) {
@@ -79,9 +77,7 @@ const sendRequest = async (
 ) => {
   if (!navigator.onLine) {
     offline.value = true;
-    // exibirNotificacao("Conexão Offline", {
-    //   body: "A requisição será sincronizada assim que a conexão for restabelecida.",
-    // });
+
     return;
   }
   isSending.value = true;
@@ -151,13 +147,7 @@ const solicitarPermissao = async () => {
     console.error("Permissão para notificações negada.");
   }
 };
-// const exibirNotificacao = (titulo: string, opcoes: IOptions) => {
-//   if (Notification.permission === "granted") {
-//     new Notification(titulo, opcoes);
-//   }
-// };
 
-// Detectando a conexão ao voltar online
 window.addEventListener("online", () => {
   if (offline.value) {
     sendPostRequest();
@@ -172,5 +162,29 @@ onMounted(() => {
 <style scoped>
 .error {
   color: red;
+}
+
+.container-btn {
+  display: flex;
+  justify-content: space-between;
+  padding: 10px;
+  width: 100%;
+}
+
+button {
+  background: #45d32d;
+  border: none;
+  color: #fff;
+  cursor: pointer;
+  padding: 10px;
+  border-radius: 3px;
+}
+
+.container-hello {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  margin-top: 10px;
 }
 </style>
