@@ -23,7 +23,7 @@ onMounted(() => {
 
     <div class="name" v-if="showName">
       <h1 class="fade-in">DMC<span>View</span></h1>
-      <img src="/dmc-view.svg" alt="icones" height="35" />
+      <img src="/dmc-view.svg" alt="icones" height="45" />
     </div>
   </div>
 </template>
@@ -42,8 +42,13 @@ onMounted(() => {
   z-index: 9999;
 }
 
+h1 {
+  color: #004415;
+  font-size: 3rem;
+}
 span {
   color: #60ab56;
+  font-size: 3rem;
 }
 
 .name {
