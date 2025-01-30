@@ -9,9 +9,9 @@ export default defineConfig({
       injectRegister: "auto",
       includeAssets: ["favicon.ico", "apple-touch-icon.png", "mask-icon.svg"],
       manifest: {
-        name: "Teste pwa",
-        short_name: "Pwa Test",
-        description: "testando pwa",
+        name: "DMC VIEW",
+        short_name: "DMC VIEM",
+        description: "DMC VIEW - Visualização de Dados",
         theme_color: "#45D32D",
         icons: [
           {
@@ -30,6 +30,7 @@ export default defineConfig({
             src: "/img1.png",
             sizes: "1024x1024",
             type: "image/png",
+            purpose: "any maskable",
           },
         ],
       },
