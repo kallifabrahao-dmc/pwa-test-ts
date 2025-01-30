@@ -22,7 +22,7 @@ onMounted(() => {
     </div>
 
     <div class="name" v-if="showName">
-      <h1 class="fade-in">DMC<span>View</span></h1>
+      <h1>DMC-<span>View</span></h1>
       <img src="/dmc-view.svg" alt="icones" height="45" />
     </div>
   </div>
@@ -49,6 +49,7 @@ h1 {
 span {
   color: #60ab56;
   font-size: 3rem;
+  margin-right: 2px;
 }
 
 .name {
@@ -84,6 +85,11 @@ span {
   height: auto;
   animation: waveReveal 2s cubic-bezier(0.3, 0, 0.2, 0.3) normal,
     fadeIn 2s ease-in-out forwards;
+}
+
+.fade-in {
+  color: #141414;
+  animation: fadeIn 1.5s ease-in-out;
 }
 
 @keyframes fadeIn {
