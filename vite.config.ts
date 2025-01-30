@@ -15,13 +15,20 @@ export default defineConfig({
         theme_color: "#45D32D",
         icons: [
           {
-            src: "/img1.png", // relative to the public directory
+            src: "/img1.png",
             sizes: "192x192",
             type: "image/png",
+            purpose: "any maskable",
           },
           {
             src: "/img2.png",
             sizes: "512x512",
+            type: "image/png",
+            purpose: "any maskable",
+          },
+          {
+            src: "/img1.png",
+            sizes: "1024x1024",
             type: "image/png",
           },
         ],

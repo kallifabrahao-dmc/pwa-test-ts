@@ -23,6 +23,7 @@ onMounted(() => {
 
     <div class="name" v-if="showName">
       <h1 class="fade-in">DMC<span>View</span></h1>
+      <img src="/dmc-view.svg" alt="icones" height="35" />
     </div>
   </div>
 </template>
@@ -34,7 +35,7 @@ onMounted(() => {
   left: 0;
   width: 100vw;
   height: 100vh;
-  background: #ffffff;
+  background: #f8f8f8;
   display: flex;
   justify-content: center;
   align-items: center;
@@ -45,8 +46,10 @@ span {
   color: #60ab56;
 }
 
-.name h1 {
-  width: 100%;
+.name {
+  display: flex;
+  align-items: center;
+  justify-content: center;
   animation: fadeIn 1.5s ease-in-out;
 }
 
@@ -74,7 +77,8 @@ span {
 .logo img {
   width: 100%;
   height: auto;
-  animation: waveReveal 2s cubic-bezier(0.3, 0, 0.2, 0.3) normal;
+  animation: waveReveal 2s cubic-bezier(0.3, 0, 0.2, 0.3) normal,
+    fadeIn 2s ease-in-out forwards;
 }
 
 @keyframes fadeIn {
