@@ -18,7 +18,7 @@ onMounted(() => {
 <template>
   <div v-if="isLoading" class="splash-screen">
     <div class="logo" v-if="!showName">
-      <img src=" /avatar-comerc.png" alt="Logo" class="fade-in" />
+      <img src=" /avatar-comerc.png" alt="Logo" class="fade-in" width="300" />
     </div>
 
     <div class="name" v-if="showName">
@@ -50,10 +50,31 @@ span {
   animation: fadeIn 1.5s ease-in-out;
 }
 
+@keyframes waveReveal {
+  0% {
+    clip-path: polygon(0% 0%, 0% 0%, 0% 100%, 0% 100%);
+  }
+  20% {
+    clip-path: polygon(0% 0%, 80% 0%, 70% 80%, 0% 100%);
+  }
+  40% {
+    clip-path: polygon(0% 0%, 80% 0%, 85% 100%, 0% 100%);
+  }
+  60% {
+    clip-path: polygon(0% 0%, 85% 0%, 90% 100%, 0% 100%);
+  }
+  80% {
+    clip-path: polygon(0% 0%, 90% 0%, 95% 100%, 0% 100%);
+  }
+  100% {
+    clip-path: polygon(0% 0%, 100% 0%, 100% 100%, 0% 100%);
+  }
+}
+
 .logo img {
-  width: 150px;
+  width: 100%;
   height: auto;
-  animation: fadeIn 1.5s ease-in-out;
+  animation: waveReveal 2s cubic-bezier(0.3, 0, 0.2, 0.3) normal;
 }
 
 @keyframes fadeIn {
