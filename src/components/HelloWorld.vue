@@ -4,7 +4,7 @@
       <button v-if="installPrompt" @click="installPWA">Instalar PWA</button>
       <button @click="sendPostRequest">Enviar POST</button>
       <button @click="sendPutRequest">Enviar PUT</button>
-      <button @click="openCamera">Abrir Câmera</button>
+      <button @click="triggerNativeCamera">Abrir Câmera Nativa</button>
       <button @click="sendDeleteRequest">Enviar DELETE</button>
       <button @click="saveToLocalStorage">Salvar no Local Storage</button>
       <button @click="loadFromLocalStorage">Carregar do Local Storage</button>
@@ -23,6 +23,14 @@
       <button @click="capturePhoto">Capturar Foto</button>
       <button @click="closeCamera">Fechar Câmera</button>
     </div>
+    <input
+      ref="fileInput"
+      type="file"
+      accept="image/*"
+      capture="environment"
+      style="display: none"
+      @change="handleFileChange"
+    />
     <div v-if="capturedImage" class="image-preview">
       <img :src="capturedImage" alt="Imagem Capturada" />
     </div>
@@ -34,6 +42,7 @@ import { onMounted, ref } from "vue";
 
 const isSending = ref(false);
 const installPrompt = ref<Event | null>(null);
+const fileInput = ref<HTMLInputElement | null>(null);
 const isCameraOpen = ref(false);
 const cameraVideo = ref<HTMLVideoElement | null>(null);
 const errorMessage = ref("");
@@ -197,6 +206,23 @@ const closeCamera = () => {
   }
   isCameraOpen.value = false;
 };
+
+const triggerNativeCamera = () => {
+  if (fileInput.value) {
+    fileInput.value.click();
+  }
+};
+
+const handleFileChange = (event: Event) => {
+  const file = (event.target as HTMLInputElement).files?.[0];
+  if (file) {
+    const reader = new FileReader();
+    reader.onload = () => {
+      capturedImage.value = reader.result as string;
+    };
+    reader.readAsDataURL(file);
+  }
+};
 </script>
 
 <style scoped>
@@ -206,6 +232,10 @@ const closeCamera = () => {
 
 .container-btn {
   display: flex;
+  flex-direction: row;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: center;
   justify-content: space-between;
   padding: 10px;
   width: 100%;
