@@ -1,8 +1,10 @@
 <template>
   <div class="container-hello">
     <div class="container-btn">
+      <button v-if="installPrompt" @click="installPWA">Instalar PWA</button>
       <button @click="sendPostRequest">Enviar POST</button>
       <button @click="sendPutRequest">Enviar PUT</button>
+      <button @click="openCamera">Abrir Câmera</button>
       <button @click="sendDeleteRequest">Enviar DELETE</button>
       <button @click="saveToLocalStorage">Salvar no Local Storage</button>
       <button @click="loadFromLocalStorage">Carregar do Local Storage</button>
@@ -15,18 +17,25 @@
       restabelecida.
     </p>
     <p v-if="storedData">Dado armazenado: {{ storedData }}</p>
+
+    <div v-if="capturedImage" class="image-preview">
+      <img :src="capturedImage" alt="Imagem Capturada" />
+    </div>
   </div>
 </template>
+
 <script lang="ts" setup>
 import { onMounted, ref } from "vue";
 
 const isSending = ref(false);
+const installPrompt = ref<Event | null>(null);
 const errorMessage = ref("");
 const isSynced = ref(false);
 const offline = ref(false);
 const apiUrl = "https://reqres.in/api/users";
 const storedData = ref<string | null>(null);
 const localStorageKey = "meuDado";
+const capturedImage = ref<string | null>(null);
 
 const saveToLocalStorage = () => {
   const dataToSave = "Este é um dado de exemplo";
@@ -44,31 +53,30 @@ const loadFromLocalStorage = () => {
   }
 };
 
-interface NotificationAction {
-  action: string;
-  title: string;
-  icon?: string;
-}
+const openCamera = async () => {
+  try {
+    const stream = await navigator.mediaDevices.getUserMedia({ video: true });
+    const video = document.createElement("video");
+    video.srcObject = stream;
+    video.play();
 
-interface ExtendedNotificationOptions extends NotificationOptions {
-  actions?: NotificationAction[];
-}
+    const canvas = document.createElement("canvas");
+    const context = canvas.getContext("2d");
 
-function exibirNotificacao() {
-  if (Notification.permission === "granted") {
-    navigator.serviceWorker.ready.then((registration) => {
-      const options: ExtendedNotificationOptions = {
-        body: "Esta é a mensagem da notificação.",
-        icon: "/caminho/para/icone.png",
-        actions: [
-          { action: "confirmar", title: "Confirmar" },
-          { action: "cancelar", title: "Cancelar" },
-        ],
-      };
-      registration.showNotification("Título da Notificação", options);
+    video.addEventListener("loadeddata", () => {
+      canvas.width = video.videoWidth;
+      canvas.height = video.videoHeight;
+
+      setTimeout(() => {
+        context?.drawImage(video, 0, 0, canvas.width, canvas.height);
+        capturedImage.value = canvas.toDataURL("image/png");
+        stream.getTracks().forEach((track) => track.stop());
+      }, 1000);
     });
+  } catch (err) {
+    console.error("Erro ao acessar a câmera:", err);
   }
-}
+};
 
 const sendRequest = async (
   method: string,
@@ -99,21 +107,19 @@ const sendRequest = async (
     }
     if (response.status === 204) {
       isSynced.value = true;
-      exibirNotificacao();
       return;
     }
     const responseData = await response.json();
     console.log(responseData);
     isSynced.value = true;
-    exibirNotificacao();
   } catch (error) {
     console.error("Error:", error);
     errorMessage.value = "Falha ao enviar os dados!";
-    exibirNotificacao();
   } finally {
     isSending.value = false;
   }
 };
+
 const sendPostRequest = () => {
   sendRequest(
     "POST",
@@ -124,6 +130,7 @@ const sendPostRequest = () => {
     apiUrl
   );
 };
+
 const sendPutRequest = () => {
   sendRequest(
     "PUT",
@@ -134,9 +141,11 @@ const sendPutRequest = () => {
     `${apiUrl}/2`
   );
 };
+
 const sendDeleteRequest = () => {
   sendRequest("DELETE", null, `${apiUrl}/2`);
 };
+
 const solicitarPermissao = async () => {
   if (!("Notification" in window)) {
     console.error("Este navegador não suporta notificações.");
@@ -154,9 +163,28 @@ window.addEventListener("online", () => {
     offline.value = false;
   }
 });
+
 onMounted(() => {
+  window.addEventListener("beforeinstallprompt", (e) => {
+    e.preventDefault();
+    installPrompt.value = e;
+  });
   solicitarPermissao();
 });
+const installPWA = () => {
+  if (installPrompt.value) {
+    (installPrompt.value as any).prompt();
+
+    (installPrompt.value as any).userChoice.then((choiceResult: any) => {
+      if (choiceResult.outcome === "accepted") {
+        console.log("PWA instalado");
+      } else {
+        console.log("PWA não instalado");
+      }
+      installPrompt.value = null;
+    });
+  }
+};
 </script>
 
 <style scoped>
@@ -186,5 +214,14 @@ button {
   align-items: center;
   justify-content: center;
   margin-top: 10px;
+}
+
+.image-preview img {
+  max-width: 100%;
+  height: auto;
+  margin-top: 10px;
+  border: 1px solid #ddd;
+  padding: 5px;
+  border-radius: 5px;
 }
 </style>
