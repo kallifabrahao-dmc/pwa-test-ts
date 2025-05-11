@@ -197,12 +197,16 @@ window.addEventListener("online", () => {
 
 const triggerBackgroundNotification = async () => {
   if (Notification.permission === "granted") {
-    const registration = await navigator.serviceWorker.ready;
-    registration.active?.postMessage({
-      action: "triggerNotification",
-      title: "Notificação em Segundo Plano",
-      message: "Esta é uma notificação emitida em segundo plano.",
-    });
+    try {
+      const registration = await navigator.serviceWorker.ready;
+      registration.active?.postMessage({
+        action: "triggerNotification",
+        title: "Notificação em Segundo Plano",
+        message: "Esta é uma notificação emitida em segundo plano.",
+      });
+    } catch (err) {
+      console.error("Erro ao acessar o Service Worker:", err);
+    }
   } else {
     console.warn("Permissão para notificações não concedida.");
   }
@@ -214,6 +218,8 @@ onMounted(() => {
     installPrompt.value = e;
   });
   solicitarPermissao();
+
+  triggerBackgroundNotification();
 });
 
 const installPWA = () => {
