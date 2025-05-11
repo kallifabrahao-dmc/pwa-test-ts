@@ -18,7 +18,7 @@ onMounted(() => {
 <template>
   <div v-if="isLoading" class="splash-screen">
     <div class="logo" v-if="!showName">
-      <img src=" /avatarComerc.png" alt="Logo" class="fade-in" width="50" />
+      <img src="/avatarComerc.png" alt="Logo" class="fade-in" />
     </div>
 
     <div class="name" v-if="showName">
@@ -78,6 +78,14 @@ span {
   100% {
     clip-path: polygon(0% 0%, 100% 0%, 100% 100%, 0% 100%);
   }
+}
+
+.logo {
+  width: 150px;
+  height: 150px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
 }
 
 .logo img {
