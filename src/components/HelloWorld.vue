@@ -69,12 +69,31 @@ const loadFromLocalStorage = () => {
   }
 };
 
-const notify = (title: string, body: string) => {
-  if (Notification.permission === "granted") {
-    new Notification(title, { body });
-  }
-};
+interface NotificationAction {
+  action: string;
+  title: string;
+  icon?: string;
+}
 
+interface ExtendedNotificationOptions extends NotificationOptions {
+  actions?: NotificationAction[];
+}
+
+function exibirNotificacao(msg: string, title: string) {
+  if (Notification.permission === "granted") {
+    navigator.serviceWorker.ready.then((registration) => {
+      const options: ExtendedNotificationOptions = {
+        body: msg,
+        icon: "/avatarComerc.png",
+        // actions: [
+        //   { action: "confirmar", title: "Confirmar" },
+        //   { action: "cancelar", title: "Cancelar" },
+        // ],
+      };
+      registration.showNotification(title, options);
+    });
+  }
+}
 const sendRequest = async (
   method: string,
   data: object | null = null,
@@ -82,7 +101,11 @@ const sendRequest = async (
 ) => {
   if (!navigator.onLine) {
     offline.value = true;
-    notify("Conexão", "Você está offline.");
+    exibirNotificacao(
+      "Você está offline. A requisição será sincronizada assim que a conexão for restabelecida.",
+      "Conexão"
+    );
+
     return;
   }
 
@@ -108,16 +131,17 @@ const sendRequest = async (
 
     if (response.status === 204) {
       isSynced.value = true;
-      notify("Sucesso", "Operação realizada com sucesso!");
+      exibirNotificacao("Operação realizada com sucesso!", "Sucesso");
+
       return;
     }
 
     await response.json();
     isSynced.value = true;
-    notify("Sucesso", "Dados enviados com sucesso!");
+    exibirNotificacao("Dados enviados com sucesso!", "Sucesso");
   } catch (error) {
     errorMessage.value = "Falha ao enviar os dados!";
-    notify("Erro", "Falha ao enviar os dados!");
+    exibirNotificacao("Falha ao enviar os dados!", "Erro");
   } finally {
     isSending.value = false;
   }
