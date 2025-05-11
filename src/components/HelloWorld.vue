@@ -69,18 +69,13 @@ const loadFromLocalStorage = () => {
   }
 };
 
-// const openCamera = async () => {
-//   try {
-//     const stream = await navigator.mediaDevices.getUserMedia({ video: true });
-//     isCameraOpen.value = true;
-//     if (cameraVideo.value) {
-//       cameraVideo.value.srcObject = stream;
-//     }
-//   } catch (err) {
-//     console.error("Erro ao acessar a câmera:", err);
-//   }
-// };
+const notify = (title: string, body: string) => {
+  if (Notification.permission === "granted") {
+    new Notification(title, { body });
+  }
+};
 
+const apiKey = "reqres-free-v1";
 const sendRequest = async (
   method: string,
   data: object | null = null,
@@ -88,36 +83,42 @@ const sendRequest = async (
 ) => {
   if (!navigator.onLine) {
     offline.value = true;
-
+    notify("Conexão", "Você está offline.");
     return;
   }
+
   isSending.value = true;
   errorMessage.value = "";
   isSynced.value = false;
+
   try {
     const options: RequestInit = {
       method,
       headers: {
         "Content-Type": "application/json",
+        "x-api-key": "reqres-free-v1",
       },
+      body: data ? JSON.stringify(data) : null,
     };
-    if (data) {
-      options.body = JSON.stringify(data);
-    }
+
     const response = await fetch(url, options);
+
     if (!response.ok) {
       throw new Error(`Erro: ${response.statusText}`);
     }
+
     if (response.status === 204) {
       isSynced.value = true;
+      notify("Sucesso", "Operação realizada com sucesso!");
       return;
     }
-    const responseData = await response.json();
-    console.log(responseData);
+
+    await response.json();
     isSynced.value = true;
+    notify("Sucesso", "Dados enviados com sucesso!");
   } catch (error) {
-    console.error("Error:", error);
     errorMessage.value = "Falha ao enviar os dados!";
+    notify("Erro", "Falha ao enviar os dados!");
   } finally {
     isSending.value = false;
   }
@@ -174,6 +175,7 @@ onMounted(() => {
   });
   solicitarPermissao();
 });
+
 const installPWA = () => {
   if (installPrompt.value) {
     (installPrompt.value as any).prompt();
@@ -188,6 +190,7 @@ const installPWA = () => {
     });
   }
 };
+
 const capturePhoto = () => {
   if (cameraVideo.value) {
     const canvas = document.createElement("canvas");
@@ -235,7 +238,6 @@ const handleFileChange = (event: Event) => {
   flex-direction: row;
   flex-wrap: wrap;
   align-items: center;
-  justify-content: center;
   justify-content: space-between;
   padding: 10px;
   width: 100%;
@@ -248,6 +250,7 @@ button {
   cursor: pointer;
   padding: 10px;
   border-radius: 3px;
+  margin-bottom: 5px;
 }
 
 .container-hello {
