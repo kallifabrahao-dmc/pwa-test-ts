@@ -12,7 +12,7 @@ export default defineConfig({
         name: "DMC VIEW",
         short_name: "DMC VIEM",
         description: "DMC VIEW - Visualização de Dados",
-        theme_color: "#45D32D",
+        theme_color: "#004415",
         icons: [
           {
             src: "/img1.png",

@@ -18,7 +18,7 @@ onMounted(() => {
 <template>
   <div v-if="isLoading" class="splash-screen">
     <div class="logo" v-if="!showName">
-      <img src=" /avatar-comerc.png" alt="Logo" class="fade-in" width="300" />
+      <img src=" /avatarComerc.png" alt="Logo" class="fade-in" width="50" />
     </div>
 
     <div class="name" v-if="showName">
