@@ -18,6 +18,11 @@
     </p>
     <p v-if="storedData">Dado armazenado: {{ storedData }}</p>
 
+    <div class="camera-feed" v-if="isCameraOpen">
+      <video ref="cameraVideo" autoplay></video>
+      <button @click="capturePhoto">Capturar Foto</button>
+      <button @click="closeCamera">Fechar Câmera</button>
+    </div>
     <div v-if="capturedImage" class="image-preview">
       <img :src="capturedImage" alt="Imagem Capturada" />
     </div>
@@ -29,6 +34,8 @@ import { onMounted, ref } from "vue";
 
 const isSending = ref(false);
 const installPrompt = ref<Event | null>(null);
+const isCameraOpen = ref(false);
+const cameraVideo = ref<HTMLVideoElement | null>(null);
 const errorMessage = ref("");
 const isSynced = ref(false);
 const offline = ref(false);
@@ -56,23 +63,10 @@ const loadFromLocalStorage = () => {
 const openCamera = async () => {
   try {
     const stream = await navigator.mediaDevices.getUserMedia({ video: true });
-    const video = document.createElement("video");
-    video.srcObject = stream;
-    video.play();
-
-    const canvas = document.createElement("canvas");
-    const context = canvas.getContext("2d");
-
-    video.addEventListener("loadeddata", () => {
-      canvas.width = video.videoWidth;
-      canvas.height = video.videoHeight;
-
-      setTimeout(() => {
-        context?.drawImage(video, 0, 0, canvas.width, canvas.height);
-        capturedImage.value = canvas.toDataURL("image/png");
-        stream.getTracks().forEach((track) => track.stop());
-      }, 1000);
-    });
+    isCameraOpen.value = true;
+    if (cameraVideo.value) {
+      cameraVideo.value.srcObject = stream;
+    }
   } catch (err) {
     console.error("Erro ao acessar a câmera:", err);
   }
@@ -184,6 +178,24 @@ const installPWA = () => {
       installPrompt.value = null;
     });
   }
+};
+const capturePhoto = () => {
+  if (cameraVideo.value) {
+    const canvas = document.createElement("canvas");
+    const context = canvas.getContext("2d");
+    canvas.width = cameraVideo.value.videoWidth;
+    canvas.height = cameraVideo.value.videoHeight;
+    context?.drawImage(cameraVideo.value, 0, 0, canvas.width, canvas.height);
+    capturedImage.value = canvas.toDataURL("image/png");
+  }
+};
+
+const closeCamera = () => {
+  if (cameraVideo.value && cameraVideo.value.srcObject) {
+    const stream = cameraVideo.value.srcObject as MediaStream;
+    stream.getTracks().forEach((track) => track.stop());
+  }
+  isCameraOpen.value = false;
 };
 </script>
 
