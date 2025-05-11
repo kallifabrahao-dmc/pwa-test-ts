@@ -75,7 +75,6 @@ const notify = (title: string, body: string) => {
   }
 };
 
-const apiKey = "reqres-free-v1";
 const sendRequest = async (
   method: string,
   data: object | null = null,
