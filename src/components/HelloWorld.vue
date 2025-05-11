@@ -8,6 +8,9 @@
       <button @click="sendDeleteRequest">Enviar DELETE</button>
       <button @click="saveToLocalStorage">Salvar no Local Storage</button>
       <button @click="loadFromLocalStorage">Carregar do Local Storage</button>
+      <button @click="triggerBackgroundNotification">
+        Notificar em Segundo Plano
+      </button>
     </div>
     <p v-if="isSending">Enviando...</p>
     <p v-if="errorMessage" class="error">Erro: {{ errorMessage }}</p>
@@ -94,6 +97,7 @@ function exibirNotificacao(msg: string, title: string) {
     });
   }
 }
+
 const sendRequest = async (
   method: string,
   data: object | null = null,
@@ -190,6 +194,19 @@ window.addEventListener("online", () => {
     offline.value = false;
   }
 });
+
+const triggerBackgroundNotification = async () => {
+  if (Notification.permission === "granted") {
+    const registration = await navigator.serviceWorker.ready;
+    registration.active?.postMessage({
+      action: "triggerNotification",
+      title: "Notificação em Segundo Plano",
+      message: "Esta é uma notificação emitida em segundo plano.",
+    });
+  } else {
+    console.warn("Permissão para notificações não concedida.");
+  }
+};
 
 onMounted(() => {
   window.addEventListener("beforeinstallprompt", (e) => {
