@@ -69,17 +69,17 @@ const loadFromLocalStorage = () => {
   }
 };
 
-const openCamera = async () => {
-  try {
-    const stream = await navigator.mediaDevices.getUserMedia({ video: true });
-    isCameraOpen.value = true;
-    if (cameraVideo.value) {
-      cameraVideo.value.srcObject = stream;
-    }
-  } catch (err) {
-    console.error("Erro ao acessar a câmera:", err);
-  }
-};
+// const openCamera = async () => {
+//   try {
+//     const stream = await navigator.mediaDevices.getUserMedia({ video: true });
+//     isCameraOpen.value = true;
+//     if (cameraVideo.value) {
+//       cameraVideo.value.srcObject = stream;
+//     }
+//   } catch (err) {
+//     console.error("Erro ao acessar a câmera:", err);
+//   }
+// };
 
 const sendRequest = async (
   method: string,
