@@ -8,7 +8,7 @@ import SplashScreen from "./components/SplashScreen.vue";
   <SplashScreen />
 
   <div class="container">
-    <h1>Testando aplicação pwa para o projeto DMC 3.0</h1>
+    <h1>Testando aplicação pwa</h1>
     <span>✅ Notificações</span>
     <span>✅ Background Sync</span>
     <span>✅ Local storage</span>

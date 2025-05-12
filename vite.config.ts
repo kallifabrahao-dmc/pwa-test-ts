@@ -9,25 +9,25 @@ export default defineConfig({
       injectRegister: "auto",
       includeAssets: ["favicon.ico", "apple-touch-icon.png", "mask-icon.svg"],
       manifest: {
-        name: "DMC VIEW",
-        short_name: "DMC VIEM",
-        description: "DMC VIEW - Visualização de Dados",
+        name: "PWA",
+        short_name: "PWA",
+        description: "PWA",
         theme_color: "#004415",
         icons: [
           {
-            src: "/img1.png",
+            src: "/PWA.jpg",
             sizes: "192x192",
             type: "image/png",
             purpose: "any maskable",
           },
           {
-            src: "/img2.png",
+            src: "/PWA.jpg",
             sizes: "512x512",
             type: "image/png",
             purpose: "any maskable",
           },
           {
-            src: "/img1.png",
+            src: "/PWA.jpg",
             sizes: "1024x1024",
             type: "image/png",
             purpose: "any maskable",

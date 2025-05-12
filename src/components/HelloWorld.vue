@@ -87,7 +87,7 @@ function exibirNotificacao(msg: string, title: string) {
     navigator.serviceWorker.ready.then((registration) => {
       const options: ExtendedNotificationOptions = {
         body: msg,
-        icon: "/avatarComerc.png",
+        icon: "/PWA.jpg",
         // actions: [
         //   { action: "confirmar", title: "Confirmar" },
         //   { action: "cancelar", title: "Cancelar" },
