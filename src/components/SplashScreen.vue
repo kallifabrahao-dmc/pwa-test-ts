@@ -18,11 +18,11 @@ onMounted(() => {
 <template>
   <div v-if="isLoading" class="splash-screen">
     <div class="logo" v-if="!showName">
-      <img src="/avatarComerc.png" alt="Logo" class="fade-in" />
+      <img src="/PWA.jpg" alt="Logo" class="fade-in" />
     </div>
 
     <div class="name" v-if="showName">
-      <h1>DMC-<span>View</span></h1>
+      <h1>Aplicação pwa</h1>
       <img src="/dmc-view.svg" alt="icones" height="45" />
     </div>
   </div>

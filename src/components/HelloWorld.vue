@@ -8,9 +8,6 @@
       <button @click="sendDeleteRequest">Enviar DELETE</button>
       <button @click="saveToLocalStorage">Salvar no Local Storage</button>
       <button @click="loadFromLocalStorage">Carregar do Local Storage</button>
-      <button @click="triggerBackgroundNotification">
-        Notificar em Segundo Plano
-      </button>
     </div>
     <p v-if="isSending">Enviando...</p>
     <p v-if="errorMessage" class="error">Erro: {{ errorMessage }}</p>
